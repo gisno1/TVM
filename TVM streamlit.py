@@ -4,7 +4,7 @@ from io import BytesIO
 import re
 
 def adjust_kenteken(kenteken):
-    
+
     return re.sub(r'(?<=[A-Z])(?=\d)|(?<=\d)(?=[A-Z])', '-', kenteken)
 
 
@@ -60,7 +60,7 @@ def main():
 
     st.title('Import TVM factuur')
     
-    factuur_file = st.file_uploader('Upload het Excel-factuurbestand', type=['xlsx'])
+    factuur_file = st.file_uploader('Upload het Excel-factuurbestand', type=['xls'])
     
     if factuur_file:
 
