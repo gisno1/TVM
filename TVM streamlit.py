@@ -60,7 +60,7 @@ def main():
 
     st.title('Import TVM factuur')
     
-    factuur_file = st.file_uploader('Upload het Excel-factuurbestand', type=['xls'])
+    factuur_file = st.file_uploader('Upload het Excel-factuurbestand', type=['xls', 'xlsx'])
     
     if factuur_file:
 
