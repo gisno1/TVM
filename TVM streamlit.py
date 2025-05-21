@@ -74,7 +74,7 @@ def main():
 
         st.download_button(label='Download verwerkte factuur',
                             data=output,
-                            file_name='ImportDaimlerFactuur.xlsx',
+                            file_name='Import TVM Exact.xlsx',
                             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         
         st.markdown("<p style='font-size:12px; color:gray;'>Let op, sla het bestand hierna op als Excel 97-2003, zodat je het kan importeren in Exact.</p>", unsafe_allow_html=True)
