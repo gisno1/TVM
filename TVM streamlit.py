@@ -3,9 +3,15 @@ import pandas as pd
 from io import BytesIO
 import re
 
-def adjust_kenteken(kenteken):
 
-    return re.sub(r'(?<=[A-Z])(?=\d)|(?<=\d)(?=[A-Z])', '-', kenteken)
+def adjust_kenteken(kenteken):
+    
+    aangepast = re.sub(r'(?<=[A-Z])(?=\d)|(?<=\d)(?=[A-Z])', '-', kenteken)
+    
+    if aangepast.count('-') != 2:
+        return f"CONTROLEREN {aangepast} FOUT KENTEKEN"
+    
+    return aangepast
 
 
 def process_file(factuur_file):
