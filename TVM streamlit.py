@@ -14,14 +14,18 @@ def adjust_kenteken(kenteken):
     return aangepast
 
 
-def process_file(factuur_file):
+def process_file(factuur_file, factuurdatum):
 
     factuur = pd.read_excel(factuur_file)
 
     factuur['Kenteken'] = factuur['Kenteken'].apply(adjust_kenteken)
     
-    factuur['Boekjaar'] = factuur['Van'].dt.year
-    factuur['Periode'] = factuur['Van'].dt.month
+    # 👉 Boekjaar en periode uit input halen
+    boekjaar = factuurdatum.year
+    periode = factuurdatum.month
+
+    factuur['Boekjaar'] = boekjaar
+    factuur['Periode'] = periode
 
     factuur['Tm'] = factuur['Tot'] - pd.Timedelta(days=1)
 
@@ -38,7 +42,10 @@ def process_file(factuur_file):
     import_df['Boekjaar'] = factuur['Boekjaar']
     import_df['Dagboek: Code'] = 60
     import_df['Periode'] = factuur['Periode']
-    import_df['Factuurdatum'] = factuur['Van']
+    
+    # 👉 Factuurdatum uit input
+    import_df['Factuurdatum'] = factuurdatum
+    
     import_df['Uw ref.'] = factuur['Notanummer']
     import_df['Omschrijving: Kopregel'] = factuur['Notanummer'].astype(str) + ' / TVM VERZEKERING'
     import_df['Code'] = 200387
@@ -49,6 +56,8 @@ def process_file(factuur_file):
     import_df['Naar'] = factuur['Tm']
     import_df['Kostenplaats: Code'] = factuur['Kenteken']
     import_df['Kostenplaats: Omschrijving'] = factuur['Kenteken']
+    
+    # 👉 Datum formatting
     import_df['Factuurdatum'] = import_df['Factuurdatum'].dt.strftime('%d-%m-%Y')
     import_df['Van'] = import_df['Van'].dt.strftime('%d-%m-%Y')
     import_df['Naar'] = import_df['Naar'].dt.strftime('%d-%m-%Y')
@@ -68,9 +77,15 @@ def main():
     
     factuur_file = st.file_uploader('Upload het Excel-factuurbestand', type=['xls', 'xlsx'])
     
-    if factuur_file:
+    # 👉 NIEUW: datum input
+    factuurdatum = st.date_input('Selecteer de factuurdatum')
+    
+    if factuur_file and factuurdatum:
 
-        processed_file = process_file(factuur_file)
+        # 👉 omzetten naar pandas datetime
+        factuurdatum = pd.to_datetime(factuurdatum)
+
+        processed_file = process_file(factuur_file, factuurdatum)
         st.write('Verwerkte factuur', processed_file.head())
                 
         output = BytesIO()
