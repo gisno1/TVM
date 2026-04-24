@@ -30,9 +30,9 @@ def process_file(factuur_file, factuurdatum):
     factuur['Tm'] = factuur['Tot'] - pd.Timedelta(days=1)
 
     columns = [
-        'Dagboek: Code', 'Boekjaar', 'Periode', 'Boekstuknummer', 'Omschrijving: Kopregel',
+        'Code dagboek', 'Boekjaar', 'Periode', 'Boekstuknummer', 'Omschrijving: Kopregel',
         'Factuurdatum', 'Vervaldatum', 'Valuta', 'Wisselkoers', 'Betalingsvoorwaarde: Code',
-        'Ordernummer', 'Uw ref.', 'Betalingsreferentie', 'Code', 'Naam', 'Grootboekrekening',
+        'Ordernummer', 'Uw ref.', 'Betalingsreferentie', 'Relatiecode', 'Naam', 'Grootboekrekening',
         'Omschrijving', 'BTW-code', 'BTW-percentage', 'Bedrag', 'Aantal', 'BTW-bedrag',
         'Opmerkingen', 'Project', 'Van', 'Naar', 'Kostenplaats: Code', 'Kostenplaats: Omschrijving',
         'Kostendrager: Code', 'Kostendrager: Omschrijving'
@@ -40,7 +40,7 @@ def process_file(factuur_file, factuurdatum):
     
     import_df = pd.DataFrame(columns=columns)
     import_df['Boekjaar'] = factuur['Boekjaar']
-    import_df['Dagboek: Code'] = 60
+    import_df['Code dagboek'] = 60
     import_df['Periode'] = factuur['Periode']
     
     # 👉 Factuurdatum uit input
@@ -48,7 +48,7 @@ def process_file(factuur_file, factuurdatum):
     
     import_df['Uw ref.'] = factuur['Notanummer']
     import_df['Omschrijving: Kopregel'] = factuur['Notanummer'].astype(str) + ' / TVM VERZEKERING'
-    import_df['Code'] = 200387
+    import_df['Relatiecode'] = 200387
     import_df['Omschrijving'] = factuur['Soort mutatie']
     import_df['Grootboekrekening'] = 7510
     import_df['Bedrag'] = factuur['Nota bedrag']
